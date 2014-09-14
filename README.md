@@ -35,7 +35,7 @@ Adding your own provider is simple:
 
 ### Create provider
 
-```
+```php
 <?php
 
 namespace Acme\Your\Namespace;

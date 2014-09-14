@@ -11,12 +11,12 @@ A php library to find books via different apis
 
 ## Installation
 
-Add TicketparkFileBundle in your composer.json:
+Add SprainBookFinder in your composer.json:
 
 ```js
 {
     "require": {
-        "sprain/bookfinder": "~0.1"
+        "sprain/bookfinder": "0.1"
     }
 }
 ```

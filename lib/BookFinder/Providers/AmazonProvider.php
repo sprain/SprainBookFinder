@@ -4,15 +4,23 @@ namespace Sprain\BookFinder\Providers;
 
 use Buzz\Browser;
 use Buzz\Client\Curl;
+use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 
-class AmazonProvider
+class AmazonProvider implements ProviderInterface
 {
     protected $response = array();
     protected $accessKey;
     protected $secret;
     protected $associateTag;
-    protected $baseUrl = 'http://webservices.amazon.de/onca/xml';
+    protected $baseUrl = 'http://webservices.amazon.com/onca/xml';
 
+    /**
+     * Constructor
+     * s
+     * @param string $accessKey
+     * @param string $secret
+     * @param string $associateTag
+     */
     public function __construct($accessKey, $secret, $associateTag)
     {
         $this->accessKey    = $accessKey;
@@ -20,6 +28,9 @@ class AmazonProvider
         $this->associateTag = $associateTag;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function searchByIsbn($isbn)
     {
         $params = array(
@@ -36,6 +47,9 @@ class AmazonProvider
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getResults()
     {
         if (!isset($this->response['Items']['Item'])) {

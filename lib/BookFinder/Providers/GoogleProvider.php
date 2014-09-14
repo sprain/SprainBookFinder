@@ -4,11 +4,18 @@ namespace Sprain\BookFinder\Providers;
 
 require_once __DIR__ . '/../../../vendor/google/apiclient/src/Google/Client.php';
 
-class GoogleProvider
+use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
+
+class GoogleProvider implements ProviderInterface
 {
     protected $response = array();
     protected $service;
 
+    /**
+     * Constructor
+     *
+     * @param string $apiKey
+     */
     public function __construct($apiKey)
     {
         $client = new \Google_Client();
@@ -17,6 +24,9 @@ class GoogleProvider
         $this->service = new \Google_Service_Books($client);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function searchByIsbn($isbn)
     {
         $this->response = $this->service->volumes->listVolumes('isbn:'.$isbn);
@@ -24,6 +34,9 @@ class GoogleProvider
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getResults()
     {
         if (!isset($this->response['data']['items'])) {

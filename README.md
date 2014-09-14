@@ -7,7 +7,7 @@ A php library to find books via different apis
 * Included providers:
     * Google Books API
     * Amazon Product Advertising API
-* Add custom providers to find books
+* Add custom providers to find books e.q. in local database
 
 ## Installation
 
@@ -16,7 +16,7 @@ Add SprainBookFinder in your composer.json:
 ```js
 {
     "require": {
-        "sprain/bookfinder": "~0.1"
+        "sprain/bookfinder": "0.1"
     }
 }
 ```

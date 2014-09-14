@@ -9,12 +9,10 @@
         {"name": "Manuel Reinhard", "email": "manu@sprain.ch"}
     ],
     "require": {
-        "google/apiclient": "1.0.4-beta",
         "kriswallsmith/buzz": "~0.12",
         "symfony/intl": "~2.5.4"
     },
     "autoload": {
-        "psr-4": { "Sprain\\BookFinder\\": "lib/BookFinder" },
-        "files": ["vendor/google/apiclient/src/Google/Client.php"]
+        "psr-4": { "Sprain\\BookFinder\\": "lib/BookFinder" }
     }
 }

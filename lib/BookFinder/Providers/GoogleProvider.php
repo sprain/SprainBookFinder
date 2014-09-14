@@ -5,6 +5,10 @@ namespace Sprain\BookFinder\Providers;
 use Sprain\BookFinder\Providers\BaseProvider\BaseProvider;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 
+set_include_path(__DIR__ . "/../../vendor/google/apiclient/src/" . get_include_path());
+require_once 'Google/Client.php';
+require_once 'Google/Service/Books.php';
+
 /**
  * GoogleProvider
  *

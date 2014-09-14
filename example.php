@@ -2,8 +2,6 @@
 
 include 'vendor/autoload.php';
 
-use Symfony\Component\Intl\Intl;
-
 $providers = array(
     array(
         'provider' => new \Sprain\BookFinder\Providers\GoogleProvider('YOUR_GOOGLE_API_KEY'),

@@ -8,6 +8,11 @@ use Sprain\BookFinder\Providers\BaseProvider\BaseProvider;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 use Symfony\Component\Intl\Intl;
 
+/**
+ * AmazonProvider
+ *
+ * @author Manuel Reinhard <manu@sprain.ch>
+ */
 class AmazonProvider extends BaseProvider implements ProviderInterface
 {
     protected $response = array();

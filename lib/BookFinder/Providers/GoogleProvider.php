@@ -7,6 +7,11 @@ require_once __DIR__ . '/../../../vendor/google/apiclient/src/Google/Client.php'
 use Sprain\BookFinder\Providers\BaseProvider\BaseProvider;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 
+/**
+ * GoogleProvider
+ *
+ * @author Manuel Reinhard <manu@sprain.ch>
+ */
 class GoogleProvider extends BaseProvider implements ProviderInterface
 {
     protected $response = array();

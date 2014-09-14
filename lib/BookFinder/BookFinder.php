@@ -2,6 +2,11 @@
 
 namespace Sprain\BookFinder;
 
+/**
+ * BookFinder
+ *
+ * @author Manuel Reinhard <manu@sprain.ch>
+ */
 class BookFinder
 {
     /**

@@ -5,6 +5,7 @@ namespace Sprain\BookFinder\Providers;
 use Buzz\Browser;
 use Buzz\Client\Curl;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
+use Symfony\Component\Intl\Intl;
 
 class AmazonProvider implements ProviderInterface
 {
@@ -12,20 +13,33 @@ class AmazonProvider implements ProviderInterface
     protected $accessKey;
     protected $secret;
     protected $associateTag;
-    protected $baseUrl = 'http://webservices.amazon.com/onca/xml';
+
+    protected $store;
+    protected $stores = array(
+        'us' => array(
+            'language' => 'en',
+            'url' => 'http://webservices.amazon.com/onca/xml',
+        ),
+        'de' => array(
+            'language' => 'de',
+            'url' => 'http://webservices.amazon.de/onca/xml',
+        ),
+    );
 
     /**
      * Constructor
-     * s
+     *
      * @param string $accessKey
      * @param string $secret
      * @param string $associateTag
      */
-    public function __construct($accessKey, $secret, $associateTag)
+    public function __construct($accessKey, $secret, $associateTag, $storeKey = 'us')
     {
         $this->accessKey    = $accessKey;
         $this->secret       = $secret;
         $this->associateTag = $associateTag;
+
+        $this->setStore($storeKey);
     }
 
     /**
@@ -110,10 +124,57 @@ class AmazonProvider implements ProviderInterface
         //Add language
         $normalizedResult['language'] = null;
         if (isset($item['ItemAttributes']['Languages']['Language'][0])) {
-            $normalizedResult['language'] = $item['ItemAttributes']['Languages']['Language'][0]['Name'];
+            $normalizedResult['language'] = $this->getLanguageCode($item['ItemAttributes']['Languages']['Language'][0]['Name']);
         }
 
         return $normalizedResult;
+    }
+
+    /**
+     * Set the desired store
+     *
+     * @param string $storeKey
+     */
+    public function setStore($storeKey)
+    {
+        if (!array_key_exists($storeKey, $this->stores)) {
+
+            $listOfValidKeys = '"'. implode('", "', array_keys($this->stores)) .'"';
+
+            throw new \Exception(sprintf('There is no store with key "%s" available. Valid store keys are %s.', $storeKey, $listOfValidKeys));
+        }
+
+        $this->store = $this->stores[$storeKey];
+    }
+
+    /**
+     * Get the current store
+     *
+     * @return array
+     */
+    public function getStore()
+    {
+        return $this->store;
+    }
+
+    /**
+     * Get base api url
+     *
+     * @return mixed
+     */
+    protected function getStoreUrl()
+    {
+        return $this->getStore()['url'];
+    }
+
+    /**
+     * Get base api url
+     *
+     * @return mixed
+     */
+    protected function getStoreLanguage()
+    {
+        return $this->getStore()['language'];
     }
 
     /**
@@ -154,7 +215,7 @@ class AmazonProvider implements ProviderInterface
 
         $params = array_merge($params, $baseParams);
 
-        return $this->signAmazonUrl($this->baseUrl.'?'.http_build_query($params), $this->secret);
+        return $this->signAmazonUrl($this->getStoreUrl().'?'.http_build_query($params), $this->secret);
     }
 
     /**
@@ -210,5 +271,20 @@ class AmazonProvider implements ProviderInterface
         $url = "{$urlparts['scheme']}://{$urlparts['host']}{$urlparts['path']}?$canonical&Signature=".rawurlencode($signature);
 
         return $url;
+    }
+
+    protected function getLanguageCode($languageString)
+    {
+        // Temporarily save current locale
+        $default = \Locale::getDefault();
+
+        // Set locale according to store, retrieve language code
+        \Locale::setDefault($this->getStoreLanguage());
+        $languages = Intl::getLanguageBundle()->getLanguageNames();
+
+        // Set locale back to default
+        \Locale::setDefault($default);
+
+        return array_search($languageString, $languages);
     }
 }

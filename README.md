@@ -16,7 +16,7 @@ Add TicketparkFileBundle in your composer.json:
 ```js
 {
     "require": {
-        "sprain/bookfinder": "0.1"
+        "sprain/bookfinder": "~0.1"
     }
 }
 ```

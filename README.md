@@ -43,7 +43,7 @@ namespace Acme\Your\Namespace;
 use Sprain\BookFinder\Providers\BaseProvider\BaseProvider;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 
-class AmazonProvider extends BaseProvider implements ProviderInterface
+class MyCustomProvider extends BaseProvider implements ProviderInterface
 {
     public function searchByIsbn($isbn)
     {

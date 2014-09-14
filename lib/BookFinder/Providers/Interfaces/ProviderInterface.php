@@ -35,4 +35,11 @@ interface ProviderInterface
      * @return array
      */
     public function getResults();
+
+    /**
+     * Get default name of provider
+     *
+     * @return string
+     */
+    public function getDefaultName();
 }

@@ -4,10 +4,11 @@ namespace Sprain\BookFinder\Providers;
 
 use Buzz\Browser;
 use Buzz\Client\Curl;
+use Sprain\BookFinder\Providers\BaseProvider\BaseProvider;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 use Symfony\Component\Intl\Intl;
 
-class AmazonProvider implements ProviderInterface
+class AmazonProvider extends BaseProvider implements ProviderInterface
 {
     protected $response = array();
     protected $accessKey;
@@ -286,5 +287,13 @@ class AmazonProvider implements ProviderInterface
         \Locale::setDefault($default);
 
         return array_search($languageString, $languages);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDefaultName()
+    {
+        return 'Amazon Product Advertising API';
     }
 }

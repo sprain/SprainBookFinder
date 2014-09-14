@@ -12,12 +12,17 @@ class BookFinder
     public function searchByIsbn($isbn)
     {
         foreach($this->providers as $provider){
-            $results = $provider['object']->searchByIsbn($isbn)->getResults();
+            $results = $provider['provider']->searchByIsbn($isbn)->getResults();
             if (count($results) > 0) {
+
+                if (isset($provider['name']) && null !== $provider['name']) {
+                    $provider['provider']->setName($provider['name']);
+                }
+
                 break;
             }
         }
 
-        return $provider['object'];
+        return $provider['provider'];
     }
 }

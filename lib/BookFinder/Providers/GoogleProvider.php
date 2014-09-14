@@ -4,9 +4,10 @@ namespace Sprain\BookFinder\Providers;
 
 require_once __DIR__ . '/../../../vendor/google/apiclient/src/Google/Client.php';
 
+use Sprain\BookFinder\Providers\BaseProvider\BaseProvider;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 
-class GoogleProvider implements ProviderInterface
+class GoogleProvider extends BaseProvider implements ProviderInterface
 {
     protected $response = array();
     protected $service;
@@ -94,5 +95,13 @@ class GoogleProvider implements ProviderInterface
         }
 
         return $normalizedResult;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDefaultName()
+    {
+        return 'Google Books Api';
     }
 }

@@ -1,0 +1,18 @@
+{
+    "name": "sprain/bookfinder",
+    "type": "library",
+    "description": "A php library to find books via different apis",
+    "keywords": ["isbn", "books"],
+    "homepage": "https://github.com/Sprain/SprainBookFinder",
+    "license": "MIT",
+    "authors": [
+        {"name": "Manuel Reinhard", "email": "manu@sprain.ch"}
+    ],
+    "require": {
+        "google/apiclient": "1.0.4-beta",
+        "kriswallsmith/buzz": "0.12"
+    },
+    "autoload": {
+        "psr-4": { "Sprain\\BookFinder\\": "lib/BookFinder" }
+    }
+}

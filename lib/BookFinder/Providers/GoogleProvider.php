@@ -2,8 +2,6 @@
 
 namespace Sprain\BookFinder\Providers;
 
-require_once __DIR__ . '/../../../vendor/google/apiclient/src/Google/Client.php';
-
 use Sprain\BookFinder\Providers\BaseProvider\BaseProvider;
 use Sprain\BookFinder\Providers\Interfaces\ProviderInterface;
 

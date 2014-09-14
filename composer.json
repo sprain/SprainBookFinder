@@ -14,6 +14,7 @@
         "symfony/intl": "~2.5.4"
     },
     "autoload": {
-        "psr-4": { "Sprain\\BookFinder\\": "lib/BookFinder" }
+        "psr-4": { "Sprain\\BookFinder\\": "lib/BookFinder" },
+        "files": ["vendor/google/apiclient/src/Google/Client.php"]
     }
 }

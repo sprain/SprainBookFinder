@@ -18,15 +18,21 @@ $providers = array(
 $bookFinder = new \Sprain\BookFinder\BookFinder($providers);
 
 // Look for "The Art of the Start"
-$successfulProvider = $bookFinder->searchByIsbn('9781591840565');
+$response = $bookFinder->searchByIsbn('9781591840565');
 var_dump(array(
-    $successfulProvider->getResults(),
-    $successfulProvider->getName()
+    $response->getResult(),
+    $response->getProviderName(),
+    get_class($response->getProvider())
 ));
 
 // Look for "Darm mit Charme"
-$successfulProvider = $bookFinder->searchByIsbn('3843707111');
+$response = $bookFinder->searchByIsbn('3843707111');
 var_dump(array(
-    $successfulProvider->getResults(),
-    $successfulProvider->getName()
+    $response->getResult(),
+    $response->getProviderName(),
+    get_class($response->getProvider())
 ));
+
+// Look for a failing result
+$response = $bookFinder->searchByIsbn('foo');
+var_dump($response);

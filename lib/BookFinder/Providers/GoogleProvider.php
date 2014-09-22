@@ -45,10 +45,10 @@ class GoogleProvider extends BaseProvider implements ProviderInterface
     /**
      * @inheritdoc
      */
-    public function getResults()
+    public function getResult()
     {
-        if (!isset($this->response['data']['items'])) {
-            return array();
+        if (!isset($this->response['data']['items'][0])) {
+            return false;
         }
 
         $map = array(
@@ -60,45 +60,42 @@ class GoogleProvider extends BaseProvider implements ProviderInterface
             'description'    => array('volumeInfo', 'description'),
         );
 
-        $normalizedResults = array();
-        foreach($this->response['data']['items'] as $item){
+        $normalizedResult = array();
+        $item = $this->response['data']['items'][0];
 
-            // Find elements by map
-            foreach($map as $mapKey => $mapItems) {
-                $searchItem = $item;
-                foreach($mapItems as $arrayElement) {
-                    if (isset($searchItem[$arrayElement])) {
-                        $searchItem = $searchItem[$arrayElement];
-                    } else {
-                        $normalizedResult[$mapKey] = null;
-                        continue 2;
-                    }
-                }
-                $normalizedResult[$mapKey] = $searchItem;
-            }
-
-            //Add image
-            $normalizedResult['image'] = null;
-            if (isset($item['volumeInfo']['imageLinks']['thumbnail'])) {
-                $normalizedResult['image'] = $item['volumeInfo']['imageLinks']['thumbnail'];
-            } elseif (isset($item['volumeInfo']['imageLinks']['smallThumbnail'])) {
-                $normalizedResult['image'] = $item['volumeInfo']['imageLinks']['smallThumbnail'];
-            }
-
-            //Add ISBNs
-            $normalizedResult['isbn10'] = null;
-            $normalizedResult['isbn13'] = null;
-            if (isset($item['volumeInfo']['industryIdentifiers'])) {
-                foreach($item['volumeInfo']['industryIdentifiers'] as $industryIdentifier){
-                    if ($industryIdentifier['type'] == 'ISBN_10') {
-                        $normalizedResult['isbn10'] = $industryIdentifier['identifier'];
-                    } elseif ($industryIdentifier['type'] == 'ISBN_13') {
-                        $normalizedResult['isbn13'] = $industryIdentifier['identifier'];
-                    }
+        // Find elements by map
+        foreach($map as $mapKey => $mapItems) {
+            $searchItem = $item;
+            foreach($mapItems as $arrayElement) {
+                if (isset($searchItem[$arrayElement])) {
+                    $searchItem = $searchItem[$arrayElement];
+                } else {
+                    $normalizedResult[$mapKey] = null;
+                    continue 2;
                 }
             }
+            $normalizedResult[$mapKey] = $searchItem;
+        }
 
-            $normalizedResults[] = $normalizedResult;
+        //Add image
+        $normalizedResult['image'] = null;
+        if (isset($item['volumeInfo']['imageLinks']['thumbnail'])) {
+            $normalizedResult['image'] = $item['volumeInfo']['imageLinks']['thumbnail'];
+        } elseif (isset($item['volumeInfo']['imageLinks']['smallThumbnail'])) {
+            $normalizedResult['image'] = $item['volumeInfo']['imageLinks']['smallThumbnail'];
+        }
+
+        //Add ISBNs
+        $normalizedResult['isbn10'] = null;
+        $normalizedResult['isbn13'] = null;
+        if (isset($item['volumeInfo']['industryIdentifiers'])) {
+            foreach($item['volumeInfo']['industryIdentifiers'] as $industryIdentifier){
+                if ($industryIdentifier['type'] == 'ISBN_10') {
+                    $normalizedResult['isbn10'] = $industryIdentifier['identifier'];
+                } elseif ($industryIdentifier['type'] == 'ISBN_13') {
+                    $normalizedResult['isbn13'] = $industryIdentifier['identifier'];
+                }
+            }
         }
 
         return $normalizedResult;

@@ -1,6 +1,7 @@
 <?php
 
 namespace Sprain\BookFinder;
+use Sprain\BookFinder\Response\BookFinderResponse;
 
 /**
  * BookFinder
@@ -27,19 +28,30 @@ class BookFinder
      */
     public function searchByIsbn($isbn)
     {
-        foreach($this->providers as $provider){
-            $results = $provider['provider']->searchByIsbn($isbn)->getResults();
+        $isbn = trim($isbn);
+        $isbn = str_replace('-', '', $isbn);
 
-            if (count($results) > 0) {
+        foreach($this->providers as $provider){
+            $result = $provider['provider']->searchByIsbn($isbn)->getResult();
+
+            if ($result) {
+
                 if (isset($provider['name']) && null !== $provider['name']) {
-                    $provider['provider']->setName($provider['name']);
+                    $providerName = $provider['name'];
+                } else {
+                    $providerName = $provider['provider']->getDefaultName();
                 }
 
-                break;
+                $response = new BookFinderResponse();
+                $response->setProvider($provider['provider']);
+                $response->setResult($result);
+                $response->setProviderName($providerName);
+
+                return $response;
             }
         }
 
-        return $provider['provider'];
+        return false;
     }
 
     /**

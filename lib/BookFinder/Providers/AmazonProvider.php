@@ -70,10 +70,10 @@ class AmazonProvider extends BaseProvider implements ProviderInterface
     /**
      * @inheritdoc
      */
-    public function getResults()
+    public function getResult()
     {
         if (!isset($this->response['Items']['Item'])) {
-            return array();
+            return false;
         }
 
         $map = array(
@@ -86,7 +86,7 @@ class AmazonProvider extends BaseProvider implements ProviderInterface
         );
 
         $normalizedResults = array();
-        if (is_array($this->response['Items']['Item'])) {
+        if (is_array($this->response['Items']['Item']) && isset($this->response['Items']['Item'][0])) {
             $item = $this->response['Items']['Item'][0];
         } else {
             $item = $this->response['Items']['Item'];
@@ -105,7 +105,6 @@ class AmazonProvider extends BaseProvider implements ProviderInterface
             }
             $normalizedResult[$mapKey] = $searchItem;
         }
-        $normalizedResults[] = $normalizedResult;
 
         //Add image
         $normalizedResult['image'] = null;

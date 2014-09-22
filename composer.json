@@ -10,7 +10,8 @@
     ],
     "require": {
         "kriswallsmith/buzz": "~0.12",
-        "symfony/intl": "~2.5.4"
+        "symfony/intl": "~2.5.4",
+        "symfony/validator": "~2.5.4"
     },
     "autoload": {
         "psr-4": { "Sprain\\BookFinder\\": "lib/BookFinder" }

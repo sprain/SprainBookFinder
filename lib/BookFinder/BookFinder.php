@@ -2,6 +2,8 @@
 
 namespace Sprain\BookFinder;
 use Sprain\BookFinder\Response\BookFinderResponse;
+use Symfony\Component\Validator\Constraints\Isbn;
+use Symfony\Component\Validator\Validation;
 
 /**
  * BookFinder
@@ -31,6 +33,16 @@ class BookFinder
         $isbn = trim($isbn);
         $isbn = str_replace('-', '', $isbn);
 
+        // Validate isbn
+        $validator = Validation::createValidator();
+        $violations = $validator->validateValue($isbn, new Isbn());
+
+        if (count($violations) > 0) {
+            
+            return false;
+        }
+
+        // Use providers to search for book
         foreach($this->providers as $provider){
             $result = $provider['provider']->searchByIsbn($isbn)->getResult();
 

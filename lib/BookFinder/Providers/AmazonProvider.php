@@ -92,6 +92,11 @@ class AmazonProvider extends BaseProvider implements ProviderInterface
             $item = $this->response['Items']['Item'];
         }
 
+        if ('Book' !== $item['ItemAttributes']['ProductGroup']) {
+
+            return false;
+        }
+
         // Find elements by map
         foreach($map as $mapKey => $mapItems) {
             $searchItem = $item;
